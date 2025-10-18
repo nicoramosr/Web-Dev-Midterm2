@@ -7,3 +7,5 @@ This project is a digital Pokedex that allow user to learn about pokemons using 
 - Nicolás Ramos Rico
 - Adrian Gallardo Medina
 
+## LIVE DEPLOYMENT
+https://web-dev-midterm2.onrender.com/
