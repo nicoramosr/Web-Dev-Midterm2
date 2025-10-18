@@ -14,20 +14,28 @@ $(document).ready(function () {
   // --- FUNCIONES ---
 
   // Cargar Pokémon 
-  function loadPokemons(offset) {
-    container.empty();
+function loadPokemons(offset) {
+  container.empty();
 
-    $.get("https://pokeapi.co/api/v2/pokemon", { limit: limit, offset: offset }, function (data) {
-      totalCount = data.count;
-      $.each(data.results, function (i, pokemon) {
-        $.get(pokemon.url, function (pokeData) {
-          showPokemonCard(pokeData);
-        });
+  $.getJSON("https://pokeapi.co/api/v2/pokemon", { limit: limit, offset: offset }, function (data) {
+    totalCount = data.count;
+
+    // recorre los pokemon uno por uno
+    function loadOne(i) {
+      if (i >= data.results.length) return;
+
+      $.getJSON(data.results[i].url, function (pokeData) {
+        showPokemonCard(pokeData);
+        loadOne(i + 1); // llama al siguiente pokemon de la lista
       });
-    }).fail(function () {
-      container.html("<p class='text-center text-light mt-4'>Error al cargar los Pokémon.</p>");
-    });
-  }
+    }
+
+    loadOne(0); // Inicia en el pokemon #1
+  }).fail(function () {
+    container.html("<p class='text-center text-light mt-4'>Error al cargar los Pokémon.</p>");
+  });
+}
+
 
   // Mostrar Pokémon como tarjeta
   function showPokemonCard(pokemon) {
